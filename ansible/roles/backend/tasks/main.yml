@@ -1,0 +1,16 @@
+---
+
+###############################################################################
+#                                                                             #
+#  Installs the setup for the backend server (Django)                         #
+#                                                                             #
+###############################################################################
+
+- set_fact:
+    app_dir: "/var/app"
+
+- name: "Create a virtualenv for Python"
+  pip:
+    requirements: "{{ app_dir }}/requirements/base.txt"
+    virtualenv: "{{ app_dir }}/.venv"
+    virtualenv_python: 3

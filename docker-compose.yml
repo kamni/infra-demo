@@ -2,9 +2,14 @@ version: '3'
 
 services:
   backend:
-    image: python:3.8.6
+    image: jleadbetter/backend
+    build:
+        context: .
+        dockerfile: ./backend/Dockerfile
     ports: 
       - ${BACKEND_PORT}:8000
+    # TODO: This is currently just for getting dev working; we should handle
+    # this differently for prod
     volumes:
       - ./backend:/var/app
     depends_on:

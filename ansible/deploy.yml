@@ -1,0 +1,29 @@
+---
+
+###############################################################################
+#                                                                             #
+# Setup for the backend and frontend servers.                                 #
+#                                                                             #
+###############################################################################
+
+- name: "Jleadbetter Demo"
+  hosts: localhost
+
+  # Let's speed up the runtime, if we're not using facts
+  gather_facts: false
+
+  vars_prompt:
+    - name: server_role
+      prompt: "Which server role (frontend, backend) are you building?"
+      private: no
+
+  # TODO: currently only the dev build is implemented
+  pre_tasks:
+    - name: "Set environment to use (options: dev, prod | default: dev)"
+      set_fact:
+        env: "dev"
+
+  tasks:
+    - name: "Running server setup for {{ server_role }}"
+      include_role:
+        name: "{{ server_role }}"
