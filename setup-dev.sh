@@ -25,7 +25,7 @@ if [ ! -d ".venv" ]; then
 
     echo "[setup-dev] Installing requirements..."
     pip install -U pip
-    pip install -r requirements/dev.txt
+    pip install -r backend/requirements/local.txt
 else
     source .venv/bin/activate
 fi

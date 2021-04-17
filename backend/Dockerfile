@@ -19,14 +19,21 @@
 
 FROM python:3.8.6-slim-buster
 
-COPY ansible /build
+ARG BUILD_DIR="/build"
+ARG APP_DIR="/opt/jleadbetter/demo"
 
-WORKDIR /build
+ENV PYTHONBUFFERED=1
 
-# TODO: run this from a virtualenv in /build that can be cleaned up. We don't
-# need it running on the regular server
-RUN pip install -U pip && pip install ansible
+COPY ansible $BUILD_DIR
+COPY backend $APP_DIR
 
-RUN ansible-playbook -i hosts -e "server_role=backend" deploy.yml
+WORKDIR $BUILD_DIR
 
-# TODO: clean up build
+RUN python3 -m venv venv && \
+    venv/bin/pip install ansible && \
+    venv/bin/ansible-playbook -i hosts -e "server_role=backend app_dir=$APP_DIR" deploy.yml
+
+WORKDIR $APP_DIR
+
+# Let's cleanup these files so they're not available on the server
+RUN rm -rf $BUILD_DIR

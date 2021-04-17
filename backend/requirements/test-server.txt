@@ -1,0 +1,5 @@
+# Requirements for doing local development outside of the docker
+# containers
+
+-r base.txt
+-r test.txt

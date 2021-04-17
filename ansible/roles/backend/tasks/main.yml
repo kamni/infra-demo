@@ -6,11 +6,10 @@
 #                                                                             #
 ###############################################################################
 
-- set_fact:
-    app_dir: "/var/app"
-
-- name: "Create a virtualenv for Python"
+- name: "Install project requirements"
   pip:
-    requirements: "{{ app_dir }}/requirements/base.txt"
-    virtualenv: "{{ app_dir }}/.venv"
-    virtualenv_python: 3
+    chdir: "{{ app_dir }}"
+    requirements: "requirements/server.txt"
+
+# TODO: migrations
+# TODO: fix that annoying message about not using /usr/bin/python3
