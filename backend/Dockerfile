@@ -22,6 +22,7 @@ ARG APP_DIR="/opt/jleadbetter/demo"
 
 ENV PYTHONBUFFERED=1
 
+# Let's get building!
 COPY ansible $BUILD_DIR
 COPY backend $APP_DIR
 

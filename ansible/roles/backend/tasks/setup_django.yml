@@ -1,0 +1,6 @@
+---
+
+- name: "Install django project requirements"
+  pip:
+    chdir: "{{ app_dir }}"
+    requirements: "requirements/server.txt"
