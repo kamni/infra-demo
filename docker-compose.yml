@@ -1,6 +1,19 @@
 version: '3'
+
 services:
-  postgres:
+  backend:
+    image: python:3.8.6
+    ports: 
+      - ${BACKEND_PORT}:8000
+    volumes:
+      - ./backend:/var/app
+    depends_on:
+      - backend-db
+  backend-db:
     image: postgres:11
+    ports:
+      - ${POSTGRES_PORT}:5432
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - /var/lib/posgresql/data

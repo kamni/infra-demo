@@ -1,2 +1,4 @@
 -r base.txt
 -r test.txt
+
+ansible==3.2.0

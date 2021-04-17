@@ -37,4 +37,4 @@ fi
 set -a; source .env; set +a
 
 echo "[setup-dev] Starting docker..."
-#docker-compose up -d
+docker-compose up -d
