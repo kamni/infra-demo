@@ -10,6 +10,7 @@
 #                                                                             #
 #   1. Python3 (tested with 3.8.6)                                            #
 #   2. docker, docker-compose                                                 #
+#   3. postgres dev libraries for your distribution (e.g. libpq-dev)          #
 #                                                                             #
 # #TODO: mkcert and dev domain in /etc/hosts so we can test TLS locally?      #
 #                                                                             #

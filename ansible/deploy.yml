@@ -12,6 +12,8 @@
 
   # Let's speed up the runtime, if we're not using facts
   gather_facts: false
+  vars:
+    ansible_python_interpreter: /usr/local/bin/python
 
   vars_prompt:
     - name: server_role

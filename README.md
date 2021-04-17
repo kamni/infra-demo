@@ -11,3 +11,9 @@ The setup is as follows:
 
 The actual frontend/backend code is irrelevant and is primarily just used to
 test the project.
+
+## Requirements
+
+* Python 3.8.6
+* docker and docker-compose
+* postgres dev libraries for your distribution (e.g., libpq-dev)

@@ -8,13 +8,17 @@ services:
         dockerfile: ./backend/Dockerfile
     command: gunicorn demo_backend.asgi:application -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
     environment:
+        - DEFAULT_DATABASE_URL
+        - DJANGO_ALLOWED_HOSTS
+        - DJANGO_DEBUG
+        - DJANGO_SECRET_KEY
         - WEB_CONCURRENCY=3
     ports:
       - ${BACKEND_PORT}:8000
     # TODO: This is currently just for getting dev working; we should handle
     # this differently for prod
     volumes:
-      - ./backend:/var/app
+      - ./backend:/opt/jleadbetter/demo
     depends_on:
       - backend-db
   backend-db:
