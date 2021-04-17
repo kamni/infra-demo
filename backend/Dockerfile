@@ -31,8 +31,6 @@ RUN python3 -m venv venv && \
     venv/bin/pip install ansible && \
     venv/bin/ansible-playbook -i hosts -e "server_role=backend app_dir=$APP_DIR" deploy.yml
 
-#RUN ansible-playbook -i hosts -e "server_role=backend app_dir=$APP_DIR" deploy.yml
-
 WORKDIR $APP_DIR
 
 # Let's cleanup these files so they're not available on the server
