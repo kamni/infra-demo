@@ -1,6 +1,5 @@
 import os
 
-from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
@@ -22,7 +21,7 @@ class Command(BaseCommand):
         if not (email and password):
             raise CommandError(
                 'Missing one or both of the required environment variables: '
-                'DJANGO_SUPERUSER_EMAIL, DJANGO_SUPERUSER_PASSWORD'
+                'DJANGO_SUPERUSER_EMAIL, DJANGO_SUPERUSER_PASSWORD',
             )
 
         user_model = get_user_model()
