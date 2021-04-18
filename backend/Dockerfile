@@ -1,22 +1,40 @@
 # Q: Why are we using ansible from within the docker container, and not
 #    controlling the whole build process externally through ansible?
 #
-# A: Ansible officially recommends `ansible-container[docker]` to run docker
-#    builds; however `ansible-container` hasn't been maintained since at least
-#    2018 and still uses pip<10.0. Downgrading pip to 9.0.3 results in being
-#    unable to use the most recent version of ansible; rather than use an
-#    outdated ansible, we're going to forego ansible-container and let docker
-#    handle the first steps of the build.
+# A: I think there are several reasons why Ansible isn't a good external
+#    controller here:
 #
-#    Ansible has a long history of not keeping various projects up to date,
-#    including the debacle in 2020 when they didn't support python3 until after
-#    python2 was deprecated. We may want to look into other, better-maintained
-#    build systems (e.g., salty vagrant?)
-
+#    1. The docker `.env` file is a simple way to change variables on-the-fly
+#       when doing local development, without needing to pass args on the
+#       command line. Ansible is missing this even in its `docker_service`
+#       command.
+#
+#    2. While Ansible has a `lookup` feature to get environmental variables, it
+#       doesn't directly inject environmental variables into the VM the way
+#       Docker can. This forces us to write passwords/secrets to files in
+#       order to persist ansible's variables after the build -- files that
+#       are potentially read-only to more than just the root user.
+#
+#    3. Ansible has a vault system to keep secrets/passwords safe, but it still
+#       requires committing secrets into the code base. The encrypted format
+#       means that it is more difficult to audit and change. Personally, I
+#       would prefer something like AWS Secrets Manager, or even setting the
+#       secret variables manually with the host service (e.g., AWS, Heroku) if
+#       possible first.
+#
+# Ultimately, Ansible is probably too heavy for this project, especially
+# because of the nature of docker here. Ansible is generally intended to be
+# run on machines that remain running, and therefore the build needs to be
+# repeatable without duplicating or overwriting things. In a docker container
+# situation, the container is always being build from scratch -- it's fine to
+# use bash commands that aren't repeatable.
+#
+# If I had time to go back and this were a real project, I would probably
+# remove it; this is more just a showcase.
+#
 # TODO: unit testing ansible setup with molecule?
 
-# We're not using a slim image because we want systemd
-FROM python:3.8.6-buster
+FROM python:3.8.6-slim-buster
 
 ARG BUILD_DIR="/build"
 ARG APP_DIR="/opt/jleadbetter/app"
