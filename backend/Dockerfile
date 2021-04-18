@@ -41,12 +41,12 @@ ARG APP_DIR
 
 ENV PYTHONBUFFERED=1
 
-# Let's get building!
 COPY ansible $BUILD_DIR
 COPY backend $APP_DIR
 
 WORKDIR $BUILD_DIR
 
+# Let's get building!
 RUN python3 -m venv venv && \
     venv/bin/pip install ansible && \
     venv/bin/ansible-playbook -i hosts -e "server_role=backend app_dir=$APP_DIR" deploy.yml
@@ -55,3 +55,4 @@ WORKDIR $APP_DIR
 
 # Let's cleanup these files so they're not available on the server
 RUN rm -rf $BUILD_DIR
+

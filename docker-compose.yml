@@ -3,6 +3,11 @@ version: '3'
 services:
   backend:
     image: jleadbetter/backend
+    build:
+        context: .
+        dockerfile: ./backend/Dockerfile
+        args:
+          - APP_DIR=/opt/jleadbetter/app
     environment:
         - DJANGO_ALLOWED_HOSTS
         - DJANGO_DEBUG
@@ -15,7 +20,7 @@ services:
         - POSTGRES_USER
         - STATIC_SERVER
         - WEB_CONCURRENCY=3
-    command: scripts/run.sh
+    command: scripts/run.sh -b
     ports:
       - ${BACKEND_PORT}:8000
     # TODO: This is currently just for getting dev working; we should handle
@@ -25,7 +30,6 @@ services:
       - ./frontend/demo_backend_static:/opt/jleadbetter/static
     depends_on:
       - backend-db
-      - backend-bootstrap
 
   backend-db:
     image: postgres:11.11
@@ -37,24 +41,6 @@ services:
       - POSTGRES_USER
     volumes:
       - /var/lib/posgresql/data
-
-  backend-bootstrap:
-    image: jleadbetter/backend
-    build:
-        context: .
-        dockerfile: ./backend/Dockerfile
-        args:
-          - APP_DIR=/opt/jleadbetter/app
-    command: scripts/build.sh
-    environment:
-      - DJANGO_ALLOWED_HOSTS
-      - DJANGO_DEBUG
-      - DJANGO_SECRET_KEY
-      - POSTGRES_DB
-      - POSTGRES_HOST
-      - POSTGRES_PASSWORD
-      - POSTGRES_USER
-      - WEB_CONCURRENCY=3
 
   # This is only intended to be run for local testing and CircleCI; for prod
   # we'll build to S3
