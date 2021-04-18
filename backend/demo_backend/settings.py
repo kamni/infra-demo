@@ -127,7 +127,7 @@ STATIC_ROOT = os.environ.get(
 
 CORS_ORIGIN_ALLOW_ALL = bool(DEBUG)
 CORS_ORIGIN_WHITELIST = (
-    os.environ.get('STATIC_SERVER', 'localhost'),
+    os.environ.get('STATIC_SERVER', 'http://localhost'),
 )
 
 # Default primary key field type
