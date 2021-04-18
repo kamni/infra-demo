@@ -8,4 +8,4 @@
 *.sqlite3
 
 # Keep our local static folder out of version control
-frontend/static
+frontend/demo_backend_static
