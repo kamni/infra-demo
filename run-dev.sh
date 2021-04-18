@@ -39,4 +39,4 @@ fi
 set -a; source .env; set +a
 
 echo "[setup-dev] Starting docker..."
-docker-compose up -d
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml up $@

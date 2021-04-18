@@ -1,0 +1,42 @@
+###############################################################################
+#                                                                             #
+# This is the local dev configuration.                                        #
+#                                                                             #
+# Your local development directories (backend, frontend) are attached to      #
+# the containers so changes in the code are reflected in the VMs right away.  #
+# Be warned that caching with gunicorn may cause some issues with Django and  #
+# still may require a restart of the container (but not a rebuild).           #
+#                                                                             #
+###############################################################################
+
+version: '3'
+
+services:
+  backend:
+    volumes:
+      - ./backend:/opt/jleadbetter/app
+      - ./frontend/demo_backend_static:/opt/jleadbetter/static
+    depends_on:
+      - backend-dev-db
+
+  backend-dev-db:
+    image: postgres:11.11
+    ports:
+      - ${POSTGRES_PORT}:5432
+    environment:
+      - POSTGRES_DB
+      - POSTGRES_PASSWORD
+      - POSTGRES_USER
+    volumes:
+      - /var/lib/posgresql/data
+
+  frontend-dev:
+    image: nginx:1.19.0
+    volumes:
+      - ./frontend/config/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./frontend/demo_frontend:/usr/share/nginx/html
+      - ./frontend/demo_backend_static:/usr/share/nginx/html/static
+    ports:
+      - ${FRONTEND_PORT}:80
+    depends_on:
+      - backend
