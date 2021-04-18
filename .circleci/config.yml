@@ -7,12 +7,10 @@ default_python_image: &default_python_image
 
 executors:
   default:
-    working_directory: ~/repo/backend
     docker:
       - <<: *default_python_image
 
 #  with-db:
-#    working_directory: ~/repo/backend
 #    docker:
 #      - <<: *default_python_image
 #        environment:
@@ -56,7 +54,9 @@ jobs:
 
       - run:
           name: Run the specified tests
-          command: ~/.local/bin/tox -re << parameters.toxenv >>
+          command: |
+            cd backend && \
+            ~/.local/bin/tox -re << parameters.toxenv >>
 
       - store_test_results:
           path: test-reports

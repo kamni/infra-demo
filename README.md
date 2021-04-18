@@ -10,6 +10,10 @@ The setup is as follows:
    frontend
 3. Database used by the backend
 
+In a real project, we would probably want to separate out the frontend and
+backend into their own repositories, but since this is a toy project it makes
+sense to keep them together for demo purposes.
+
 The actual frontend/backend code is irrelevant and is primarily just used to
 test the project, with the exception of:
 
