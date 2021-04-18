@@ -6,3 +6,6 @@
 *.db
 *.sqlite
 *.sqlite3
+
+# Keep our local static folder out of version control
+frontend/static
