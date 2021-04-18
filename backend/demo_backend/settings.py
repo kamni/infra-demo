@@ -18,7 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
-DEBUG = os.environ.get('DJANGO_DEBUG', False)
+DEBUG = bool(os.environ.get('DJANGO_DEBUG', False))
 
 ALLOWED_HOSTS = os.environ['DJANGO_ALLOWED_HOSTS']
 
@@ -125,10 +125,24 @@ STATIC_ROOT = os.environ.get(
     os.path.join(BASE_DIR, 'static'),
 )
 
-CORS_ORIGIN_ALLOW_ALL = bool(DEBUG)
+CORS_ORIGIN_ALLOW_ALL = DEBUG
 CORS_ORIGIN_WHITELIST = (
     os.environ.get('STATIC_SERVER', 'http://localhost'),
 )
+
+# This variable is for local development. Do not use in prod.
+# TODO: get HTTPS working in dev environment, even when debug is False.
+# These values will later be set based on DEBUG
+force_insecure = bool(os.environ.get('DJANGO_FORCE_INSECURE', False))
+
+if not force_insecure:
+    SECURE_HSTS_SECONDS = 3153600  # 1 year
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+
+    SECURE_SSL_REDIRECT = True
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

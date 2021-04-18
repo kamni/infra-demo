@@ -11,6 +11,7 @@ services:
     environment:
         - DJANGO_ALLOWED_HOSTS
         - DJANGO_DEBUG
+        - DJANGO_FORCE_INSECURE
         - DJANGO_SECRET_KEY
         - DJANGO_STATIC_ROOT
         - DJANGO_STATIC_URL
