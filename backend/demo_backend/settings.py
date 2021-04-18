@@ -18,7 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
-DEBUG = os.environ['DJANGO_DEBUG']
+DEBUG = os.environ.get('DJANGO_DEBUG', False)
 
 ALLOWED_HOSTS = os.environ['DJANGO_ALLOWED_HOSTS']
 
@@ -120,11 +120,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = os.environ['DJANGO_STATIC_URL']
-STATIC_ROOT = os.environ['DJANGO_STATIC_ROOT']
+STATIC_ROOT = os.environ.get(
+    'DJANGO_STATIC_ROOT',
+    os.path.join(BASE_DIR, 'static'),
+)
 
 CORS_ORIGIN_ALLOW_ALL = bool(DEBUG)
 CORS_ORIGIN_WHITELIST = (
-    os.environ['STATIC_SERVER'],
+    os.environ.get('STATIC_SERVER', 'localhost'),
 )
 
 # Default primary key field type

@@ -8,5 +8,8 @@ docker-compose.override.yml
 *.sqlite
 *.sqlite3
 
+# Test files
+.coverage
+
 # Keep our local static folder out of version control
 frontend/demo_backend_static
