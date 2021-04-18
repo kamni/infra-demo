@@ -6,5 +6,19 @@
 #                                                                             #
 ###############################################################################
 
-- include_tasks: install_system_dependencies.yml
+# Ansible `apt` commands can only be run from the system python, and won't run
+# from inside a virtualenv.  This is a bug (*cough* feature) they refuse
+# to fix: https://github.com/ansible/ansible/issues/73075. Combined with other
+# installation issues, such as ansible not installing the python3-apt package,
+# and `apt` not correctly recognizing the system python3, and other issues
+# outside of the scope of this project, we're just going to run this manually
+# TODO: get `apt` module working
+- name: "Update apt"
+  shell:
+    cmd: apt-get update
+  args:
+    # Yes, ansible, we know we're not using the `apt` module
+    warn: false
+
+- include_tasks: setup_nginx.yml
 - include_tasks: setup_django.yml

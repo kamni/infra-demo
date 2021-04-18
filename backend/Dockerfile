@@ -15,10 +15,11 @@
 
 # TODO: unit testing ansible setup with molecule?
 
-FROM python:3.8.6-slim-buster
+# We're not using a slim image because we want systemd
+FROM python:3.8.6-buster
 
 ARG BUILD_DIR="/build"
-ARG APP_DIR="/opt/jleadbetter/demo"
+ARG APP_DIR="/opt/jleadbetter/app"
 
 ENV PYTHONBUFFERED=1
 

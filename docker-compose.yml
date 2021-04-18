@@ -18,7 +18,7 @@ services:
     # TODO: This is currently just for getting dev working; we should handle
     # this differently for prod
     volumes:
-      - ./backend:/opt/jleadbetter/demo
+      - ./backend:/opt/jleadbetter/app
     depends_on:
       - backend-db
       - backend-bootstrap
