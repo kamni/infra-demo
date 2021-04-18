@@ -1,9 +1,78 @@
 version: 2.1
 
-orbs:
-  welcome: circleci/welcome-orb@0.4.1
+default_python_image: &default_python_image
+  image: circleci/python:3.8
+
+###############################################################################
+
+executors:
+  default:
+    working_directory: ~/repo/backend
+    docker:
+      - <<: *default_python_image
+
+#  with-db:
+#    working_directory: ~/repo/backend
+#    docker:
+#      - <<: *default_python_image
+#        environment:
+#          - DJANGO_ALLOWED_HOSTS=*
+#          - POSTGRES_DB=circle_test
+#          - POSTGRES_HOST=localhost
+#          - POSTGRES_PASSWORD=postgres
+#          - POSTGRES_USER=postgres
+#      - image: circleci/postgres:11.11
+#        environment:
+#          - POSTGRES_DB=circle_test
+#          - POSTGRES_PASSWORD=postgres
+
+###############################################################################
+
+jobs:
+  run-tox:
+    executor: << parameters.executor >>
+    parameters:
+      toxenv:
+        type: string
+        description: The tox environment to run
+      executor:
+        type: executor
+        default: default
+    steps:
+      - checkout
+
+      - run:
+          name: Create composite file for cache key
+          command: cat backend/tox.ini backend/requirements/*.txt > cache-checker.txt
+
+      - restore_cache:
+          keys:
+            - jleadbetter-{{ checksum "cache-checker.txt" }}
+            - jleadbetter
+
+      - run: pip install --user tox
+
+      - run: mkdir -p test-reports
+
+      - run:
+          name: Run the specified tests
+          command: ~/.local/bin/tox -re << parameters.toxenv >>
+
+      - store_test_results:
+          path: test-reports
+
+      - store_artifacts:
+          path: test-reports
+
+      - save_cache:
+          key: jleadbetter-{{ checksum "cache-checker.txt" }}
+          paths:
+            - ~/.cache/pip
+
+###############################################################################
 
 workflows:
-  welcome:
+  test-flake8:
     jobs:
-      - welcome/run
+      - run-tox:
+          toxenv: flake8
