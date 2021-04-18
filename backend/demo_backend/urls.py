@@ -16,6 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from demo_backend import views
+
 urlpatterns = [
+    path('', views.HealthCheck.as_view(), name='healthcheck'),
+    path('app/', views.DemoEndpoint.as_view(), name='demo'),
     path('admin/', admin.site.urls),
 ]

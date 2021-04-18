@@ -36,6 +36,7 @@ INSTALLED_APPS = [
 
     # third-party apps
     'corsheaders',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
