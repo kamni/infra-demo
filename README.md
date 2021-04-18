@@ -33,3 +33,24 @@ test the project, with the exception of:
 ```bash
 source run-dev.sh
 ```
+
+
+## More to Do
+
+There was limited time to put this project together, and you'll see TODOs
+scattered throughout the code. Here are some of the things I would like to have
+done if I had more time:
+
+* Implement HTTPS in the local dev environment
+
+* Add some integration with AWS, both with boto in the django project, and
+  with orbs in circleci; perhaps deploy the project somewhere.
+
+* Build a more sophisticated frontend app that could be build using webpack or
+  similar.
+
+* Slack integration for circleci for build notices
+
+* Add some pre-commit hooks that would run linting, isort, etc.
+
+* Better test coverage in the backend app
