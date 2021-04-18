@@ -37,7 +37,7 @@
 FROM python:3.8.6-slim-buster
 
 ARG BUILD_DIR="/build"
-ARG APP_DIR="/opt/jleadbetter/app"
+ARG APP_DIR
 
 ENV PYTHONBUFFERED=1
 

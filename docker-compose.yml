@@ -7,6 +7,8 @@ services:
         - DJANGO_ALLOWED_HOSTS
         - DJANGO_DEBUG
         - DJANGO_SECRET_KEY
+        - DJANGO_STATIC_ROOT
+        - DJANGO_STATIC_URL
         - POSTGRES_DB
         - POSTGRES_HOST
         - POSTGRES_PASSWORD
@@ -19,6 +21,7 @@ services:
     # this differently for prod
     volumes:
       - ./backend:/opt/jleadbetter/app
+      - ./frontend/demo_backend_static:/opt/jleadbetter/static
     depends_on:
       - backend-db
       - backend-bootstrap
@@ -39,6 +42,8 @@ services:
     build:
         context: .
         dockerfile: ./backend/Dockerfile
+        args:
+          - APP_DIR=/opt/jleadbetter/app
     # TODO: create this as a script; include setting superuser
     command: python manage.py migrate --no-input && python manage.py collectstatic --no-input
     environment:
