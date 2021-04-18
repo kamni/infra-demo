@@ -6,23 +6,24 @@ default_python_image: &default_python_image
 ###############################################################################
 
 executors:
-  default:
+  default-test:
     docker:
       - <<: *default_python_image
 
-#  with-db:
-#    docker:
-#      - <<: *default_python_image
-#        environment:
-#          - DJANGO_ALLOWED_HOSTS=*
-#          - POSTGRES_DB=circle_test
-#          - POSTGRES_HOST=localhost
-#          - POSTGRES_PASSWORD=postgres
-#          - POSTGRES_USER=postgres
-#      - image: circleci/postgres:11.11
-#        environment:
-#          - POSTGRES_DB=circle_test
-#          - POSTGRES_PASSWORD=postgres
+  with-test-db:
+    docker:
+      - <<: *default_python_image
+        environment:
+          - DJANGO_ALLOWED_HOSTS=*
+          - DJANGO_SECRET_KEY=f2dv_8dvp=d5rogseq4strs2!owgjcoz8gtkkc6k@(_lenbmb2
+          - POSTGRES_DB=circle_test
+          - POSTGRES_HOST=localhost
+          - POSTGRES_PASSWORD=postgres
+          - POSTGRES_USER=postgres
+      - image: circleci/postgres:11.11
+        environment:
+          - POSTGRES_DB=circle_test
+          - POSTGRES_PASSWORD=postgres
 
 ###############################################################################
 
@@ -35,7 +36,7 @@ jobs:
         description: The tox environment to run
       executor:
         type: executor
-        default: default
+        default: default-test
     steps:
       - checkout
 
@@ -76,3 +77,8 @@ workflows:
     jobs:
       - run-tox:
           toxenv: flake8
+      - run-tox:
+          toxenv: isort
+      - run-tox:
+          toxenv: deploy-check
+          executor: with-test-db
