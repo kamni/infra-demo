@@ -1,5 +1,4 @@
-# Requirements for doing local development outside of the docker
-# containers
+# Requirements for CircleCI and other testing environments
 
 -r base.txt
 -r test.txt
