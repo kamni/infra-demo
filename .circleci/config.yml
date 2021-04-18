@@ -82,3 +82,6 @@ workflows:
       - run-tox:
           toxenv: deploy-check
           executor: with-test-db
+      - run-tox:
+          toxenv: tests
+          executor: with-test-db
