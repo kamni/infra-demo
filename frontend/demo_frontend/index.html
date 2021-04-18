@@ -6,6 +6,27 @@
     </head>
 
     <body>
+        <!-- TODO: Make this pretty? -->
+        <h1>The Frontend Server Says:</h1>
         <p>Hello, you've reached the frontend server</p>
+
+        <h1>The Backend Server Says:</h1>
+        <p id="backend-msg"></p>
     </body>
+
+    <script>
+        // We're not bothering with jquery or state-change libraries, because
+        // this is just a demo, and we're not doing much
+        window.onload = () => {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = () => {
+                if ( xhttp.readyState == 4 && xhttp.status == 200 ) {
+                    let msg = JSON.parse(xhttp.response).msg
+                    document.getElementById("backend-msg").innerHTML = msg;
+                }
+            };
+            xhttp.open("GET", "/app", true);
+            xhttp.send();
+        }
+    </script>
 </html>
