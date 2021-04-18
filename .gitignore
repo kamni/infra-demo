@@ -1,6 +1,7 @@
 # Environment files
 .env
 .venv
+docker-compose.override.yml
 
 # Common dev db files
 *.db

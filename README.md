@@ -6,14 +6,26 @@ various technologies.
 The setup is as follows:
 
 1. Frontend running a Javascript application, with public access.
-2. Backend running a Python-based API; only the frontend has access.
-3. Database that can be accessed only by the backend.
+2. Backend running a Python-based API; reverse proxy to the backend through the
+   frontend
+3. Database used by the backend
 
 The actual frontend/backend code is irrelevant and is primarily just used to
-test the project.
+test the project, with the exception of:
+
+* `scripts` folder in the backend project
+* `create_default_superuser` management task in the backend project
+
 
 ## Requirements
 
 * Python 3.8.6
 * docker and docker-compose
 * postgres dev libraries for your distribution (e.g., libpq-dev)
+
+
+## Quick-Start
+
+```bash
+source run-dev.sh
+```

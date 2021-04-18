@@ -34,6 +34,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # this project
+    'demo_backend',
+
     # third-party apps
     'corsheaders',
     'rest_framework',

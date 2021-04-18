@@ -38,5 +38,12 @@ if [ ! -f ".env" ]; then
 fi
 set -a; source .env; set +a
 
+# This is a docker-compose override specifically for the dev setup. Feel free
+# to modify it as desired
+if [ ! -f "docker-compose.override.yml" ]; then
+    echo "[setup-dev] Creating docker-compose.override.yml for local dev..."
+    cp docker-compose.override.yml.example docker-compose.override.yml
+fi
+
 echo "[setup-dev] Starting docker..."
-docker-compose -f docker-compose.yml -f docker-compose.dev.yml up $@
+docker-compose up -d $@
