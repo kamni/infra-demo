@@ -13,6 +13,7 @@ services:
         - POSTGRES_HOST
         - POSTGRES_PASSWORD
         - POSTGRES_USER
+        - STATIC_SERVER
         - WEB_CONCURRENCY=3
     command: gunicorn demo_backend.asgi:application -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
     ports:
