@@ -1,7 +1,7 @@
-# Q: Why are we using ansible from within the docker container, and not
-#    controlling the whole build process externally through ansible?
+# Q: Why not use ansible?
 #
-# A: I think there are several reasons why Ansible isn't a good external
+# A: I originally started out this project as an ansible project, but removed
+#    it. I think there are several reasons why Ansible isn't a good external
 #    controller here:
 #
 #    1. The docker `.env` file is a simple way to change variables on-the-fly
@@ -22,37 +22,31 @@
 #       secret variables manually with the host service (e.g., AWS, Heroku) if
 #       possible first.
 #
+#    4. Ansible seems to have a bug (*cough* feature) where it can only use
+#       `apt` within the context of the machine's system python (not a venv), and
+#       requires python3-apt (which isn't installed when ansible is installed).
+#       Given that `apt` is the main task we're running, it doesn't make
+#       sense to install such heavy additional libraries onto the server. We'll
+#       just call `apt` directly.
+#
 # Ultimately, Ansible is probably too heavy for this project, especially
 # because of the nature of docker here. Ansible is generally intended to be
 # run on machines that remain running, and therefore the build needs to be
 # repeatable without duplicating or overwriting things. In a docker container
-# situation, the container is always being build from scratch -- it's fine to
-# use bash commands that aren't repeatable.
-#
-# If I had time to go back and this were a real project, I would probably
-# remove it; this is more just a showcase.
-#
-# TODO: unit testing ansible setup with molecule?
+# situation, the container is always being built from scratch -- it's fine to
+# use bash commands that aren't repeatable, especially when there are so few.
 
 FROM python:3.8.6-slim-buster
 
-ARG BUILD_DIR="/build"
-ARG APP_DIR
-
 ENV PYTHONBUFFERED=1
 
-COPY ansible $BUILD_DIR
+ARG APP_DIR
 COPY backend $APP_DIR
-
-WORKDIR $BUILD_DIR
-
-# Let's get building!
-RUN python3 -m venv venv && \
-    venv/bin/pip install ansible && \
-    venv/bin/ansible-playbook -i hosts -e "server_role=backend app_dir=$APP_DIR" deploy.yml
-
 WORKDIR $APP_DIR
 
-# Let's cleanup these files so they're not available on the server
-RUN rm -rf $BUILD_DIR
+# Let's get building!
+RUN apt-get update && \
+    apt-get install -y libpq-dev build-essential
 
+RUN pip install -U pip && \
+    pip install -r requirements/server.txt
