@@ -76,12 +76,16 @@ workflows:
   test-flake8:
     jobs:
       - run-tox:
+          name: "tox-flake8"
           toxenv: flake8
       - run-tox:
+          name: "tox-isort"
           toxenv: isort
       - run-tox:
+          name: "tox-deploy-check"
           toxenv: deploy-check
           executor: with-test-db
       - run-tox:
+          name: "tox-pytest"
           toxenv: tests
           executor: with-test-db
