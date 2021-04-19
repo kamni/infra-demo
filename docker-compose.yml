@@ -1,3 +1,14 @@
+###############################################################################
+#                                                                             #
+#  Setup only for prod servers.                                               #
+#                                                                             #
+#  Assumes the use of AWS RDS for the database and S3 for static files, so    #
+#  there is no other setup than the backend needed. If you are doing local    #
+#  development, use the docker-compose.override.yml.example to create the     #
+#  additional machines needed to support the backend.                         #
+#                                                                             #
+###############################################################################
+
 version: '3'
 
 services:
