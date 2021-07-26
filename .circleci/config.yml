@@ -95,3 +95,4 @@ workflows:
             - tox-flake8
             - tox-isort
             - hold
+              type: approval
