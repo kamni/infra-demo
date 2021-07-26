@@ -85,7 +85,13 @@ workflows:
           name: "tox-deploy-check"
           toxenv: deploy-check
           executor: with-test-db
+          requires:
+            - tox-pytest
       - run-tox:
           name: "tox-pytest"
           toxenv: tests
           executor: with-test-db
+          requires:
+            - tox-flake8
+            - tox-isort
+            - hold
